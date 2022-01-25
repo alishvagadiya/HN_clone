@@ -61,6 +61,8 @@ nav {
 main {
   background-color: #f6f6ef;
   min-height: calc(100vh - 3rem);
+  margin: 0%;
+  overflow: auto;
 }
 
 .linkDetails {
@@ -74,4 +76,27 @@ main {
 
 .linkSubDetails {
   font-size: 7pt;
+}
+
+footer,
+centre {
+  margin: 0%;
+  background-color: #f6f6ef;
+}
+
+hr {
+  background-color: #f6f6ef;
+  color: #ff6600;
+  margin: 0%;
+}
+
+.navFooter {
+  color: #000000;
+  font-size: 8pt;
+  padding: 0.5rem 30%;
+}
+
+.navSearch {
+  padding: 0.5rem;
+  padding: 1rem;
 }
