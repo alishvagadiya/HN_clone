@@ -76,7 +76,9 @@
     </footer>
   </body>
   <script>
-    const dataRequest = new Request("data.json");
+    const dataRequest = new Request(
+      "https://hn.algolia.com/api/v1/search?tags=story"
+    );
     fetch(dataRequest)
       .then((response) => response.json())
       .then((responseData) => {
