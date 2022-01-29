@@ -7,17 +7,6 @@ body {
   width: 90%;
 }
 
-header {
-  background-color: #ff6600;
-  padding: 0.5rem;
-  color: #000000;
-  display: grid;
-  grid-template-areas:
-    "divLogo nav login";
-  grid-template-columns: 15% auto 15%;
-  grid-column-gap: 1%;
-}
-
 h4 {
   margin: 0%;
 }
@@ -30,6 +19,18 @@ a {
 a:hover {
   cursor: pointer;
 }
+
+header {
+  background-color: #ff6600;
+  padding: 0.5rem;
+  color: #000000;
+  display: grid;
+  grid-template-areas:
+    "divLogo nav login";
+  grid-template-columns: 15% auto 15%;
+  grid-column-gap: 1%;
+}
+
 
 .divLogo {
   display: flex;
