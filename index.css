@@ -7,6 +7,14 @@ body {
   width: 90%;
 }
 
+/* mobile screen */
+@media (max-width: 1200px) {
+  body {
+    margin: 0%;
+    width: 100%;
+  }
+}
+
 h4 {
   margin: 0%;
 }
@@ -24,25 +32,53 @@ header {
   background-color: #ff6600;
   padding: 0.5rem;
   color: #000000;
-  display: grid;
-  grid-template-areas:
-    "divLogo nav login";
-  grid-template-columns: 15% auto 15%;
-  grid-column-gap: 1%;
+}
+
+@media (min-width: 750px) {
+  header {
+    display: grid;
+    grid-template-areas: "divLogo nav login";
+    grid-column-gap: 1%;
+  }
+}
+
+@media (min-width: 1200px) {
+  header {
+    display: grid;
+    grid-template-areas: "divLogo nav login";
+    grid-template-columns: 15% auto 15%;
+    grid-column-gap: 1%;
+  }
+}
+
+@media (max-width: 750px) {
+  header {
+    display: grid;
+    grid-template-areas:
+      "divLogo login"
+      "nav nav";
+    grid-column-gap: 1%;
+    grid-row-gap: 1%;
+  }
 }
 
 
 .divLogo {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  align-self: center;
   grid-area: divLogo;
 }
 
+@media (min-width: 1200px) {
+  nav {
+    max-width: 70%;
+  }
+}
+
 nav {
-  max-width: 70%;
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: space-around;
   grid-area: nav;
 }
@@ -57,6 +93,7 @@ nav {
 .logo {
   color: #ffffff;
   border: 1px solid #ffffff;
+  margin: 0 10px;
 }
 
 main {
@@ -66,7 +103,30 @@ main {
   overflow: auto;
 }
 
+.newsList {
+  font-size: 10pt;
+}
+
+.divGrid {
+  display: grid;
+  grid-template-areas: "upvote linkDetails"
+    ". linkSubDetails";
+  grid-template-columns: 10px auto;
+  grid-column-gap: 2px;
+  padding: 2.5px 0;
+}
+
+.upvote {
+  grid-area: upvote;
+  font-size: 9pt;
+  /* padding-top: 5px; */
+}
+
 .linkDetails {
+  grid-area: linkDetails;
+}
+
+.linkText {
   color: #000000;
   font-size: 10pt;
 }
@@ -77,6 +137,7 @@ main {
 
 .linkSubDetails {
   font-size: 7pt;
+  grid-area: linkSubDetails;
 }
 
 footer,

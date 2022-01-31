@@ -86,10 +86,16 @@
       });
     function loadData(newsJson) {
       const rootElement = document.getElementById("newsList");
+      rootElement.classList.add("newsList");
       document.getElementById("newsList").innerHTML = "";
       for (const news of newsJson) {
         rootElement.appendChild(newsBox(news));
       }
+      const mainTag = document.getElementById("newsList");
+      const moreTag = addElement("a", mainTag, {
+        text: "More",
+        otherAttribute: { href: "news.url" },
+      });
     }
     function addElement(
       tagName,
@@ -148,11 +154,15 @@
       return plural(secondsDiff, " second") + " ago";
     }
     function newsBox(news = {}) {
-      const newsBlock = addElement("li", "");
-      const linkDetailsBlock = addElement("div", newsBlock);
+      const newsList = addElement("li", "", { class: "newsList" });
+      const newsBlock = addElement("div", newsList, { class: "divGrid" });
+      addElement("span", newsBlock, { class: "upvote", text: "▲" });
+      const linkDetailsBlock = addElement("div", newsBlock, {
+        class: "linkDetails",
+      });
 
       addElement("a", linkDetailsBlock, {
-        class: "linkDetails",
+        class: "linkText",
         text: news.title,
         otherAttribute: { href: news.url },
       });
@@ -160,7 +170,6 @@
       addElement("a", linkDetailsBlock, {
         class: "linkDomain",
         text: "<span> (" + domainName + " )</span>",
-        id: "linkDetails",
         otherAttribute: {
           href: "https://news.ycombinator.com/from?site=" + domainName,
         },
@@ -201,7 +210,7 @@
           href: "https://news.ycombinator.com/hide?id=" + news.objectID,
         },
       });
-      return newsBlock;
+      return newsList;
     }
   </script>
 </html>
