@@ -82,22 +82,35 @@
     fetch(dataRequest)
       .then((response) => response.json())
       .then((responseData) => {
-        const data = responseData.hits;
-        let newsListHtmlStr = "";
-        newsListHtmlStr1 = data.map((obj) => {
-          newsListHtmlStr +=
-            '<li><div><a class="linkDetails">' +
-            obj.title +
-            "</a>" +
-            '</div><div class="linkSubDetails"><span>' +
-            obj.points +
-            " points </span> by <a>" +
-            obj.author +
-            "</a> <a>" +
-            obj.created_at +
-            "</a> | <a>hide</a> | <a>past</a> | <a>discuss</a></div></li>";
-        });
-        document.getElementById("newsList").innerHTML = newsListHtmlStr;
+        const dataJson = responseData.hits;
+        document.getElementById("newsList").innerHTML = newsList(dataJson);
       });
+    function newsList(newsJson) {
+      return newsJson.reduce((objStr, obj) => {
+        return (
+          objStr +
+          '<li><div><a class="linkDetails">' +
+          obj.title +
+          '</a> <a class="linkDomain"> (' +
+          getDomain(obj.url) +
+          ")</a></div>" +
+          '<div class="linkSubDetails"><span>' +
+          obj.points +
+          " points </span> by <a>" +
+          obj.author +
+          "</a> <a>" +
+          obj.created_at +
+          "</a> | <a>hide</a> | <a>past</a> | <a>discuss</a></div></li>"
+        );
+      }, "");
+    }
+    function getDomain(url) {
+      if (url != null) {
+        const urlObj = new URL(url);
+        return urlObj.hostname.replace(/^www\./, "");
+      } else {
+        return;
+      }
+    }
   </script>
 </html>
