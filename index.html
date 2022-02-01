@@ -38,6 +38,7 @@
           </h2>
         </center>
       </ol>
+      <div id="paging" class="paging"></div>
     </main>
     <hr />
     <footer>
@@ -89,7 +90,7 @@
         newsList = responseData.hits;
         // current fetch contain 20 news, for pagination purpose duplication function is created.
         // one page load is 30 news
-        duplicate(6);
+        duplicate(7);
       })
       .then(() => {
         pageData(1);
@@ -125,28 +126,35 @@
       rootElement.setAttribute("start", startIndex + 1);
       rootElement.classList.add("newsList");
       document.getElementById("newsList").innerHTML = "";
-      for (let index = startIndex; index < endIndex; index++) {
+      let startNewsIndex = startIndex;
+      let endNewsIndex = endIndex;
+      let newsCount = newsList.length;
+      if (startIndex < 0) {
+        startNewsIndex == 0;
+      }
+      if (endNewsIndex > newsCount) {
+        endNewsIndex = newsCount;
+      }
+      for (let index = startNewsIndex; index < endNewsIndex; index++) {
         rootElement.appendChild(newsBox(newsList[index]));
       }
 
-      let newsCount = newsList.length;
-      const moreBlock = addElement("div", rootElement, { class: "divMore" });
+      const pageBlock = document.getElementById("paging");
+      pageBlock.innerHTML = "";
       if (startIndex == 0) {
-        backPageBtn(moreBlock, "disable");
-        pageNumberBtn(moreBlock);
-        nextPageBtn(moreBlock);
-      } else if (startIndex != 0 && newsCount != endIndex) {
-        backPageBtn(moreBlock);
-        pageNumberBtn(moreBlock);
-        nextPageBtn(moreBlock);
-      } else if (newsCount == endIndex) {
-        backPageBtn(moreBlock);
-        pageNumberBtn(moreBlock);
-        nextPageBtn(moreBlock, "disable");
+        backPageBtn(pageBlock, "disable");
+      } else {
+        backPageBtn(pageBlock);
+      }
+      pageNumberBtn(pageBlock);
+      if (newsCount == endNewsIndex) {
+        nextPageBtn(pageBlock, "disable");
+      } else {
+        nextPageBtn(pageBlock);
       }
     }
-    function nextPageBtn(moreBlock, disable = "") {
-      addElement("a", moreBlock, {
+    function nextPageBtn(pageBlock, disable = "") {
+      addElement("a", pageBlock, {
         text: "More",
         class: "pageBtn" + " " + disable,
         otherAttribute: {
@@ -154,8 +162,8 @@
         },
       });
     }
-    function backPageBtn(moreBlock, disable = "") {
-      addElement("a", moreBlock, {
+    function backPageBtn(pageBlock, disable = "") {
+      addElement("a", pageBlock, {
         text: "Back",
         class: "pageBtn" + " " + disable,
         otherAttribute: {
@@ -163,10 +171,10 @@
         },
       });
     }
-    function pageNumberBtn(moreBlock) {
-      const totalPage = newsList.length / perPageNews;
+    function pageNumberBtn(pageBlock) {
+      const totalPage = Math.ceil(newsList.length / perPageNews);
       for (let index = 1; index <= totalPage; index++) {
-        addElement("a", moreBlock, {
+        addElement("a", pageBlock, {
           text: " " + index + " ",
           class: "pageBtn",
           otherAttribute: {

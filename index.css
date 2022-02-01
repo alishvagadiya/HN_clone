@@ -3,7 +3,8 @@ body {
   font-size: 1rem;
   color: #828282;
   margin: 0% 5%;
-  height: 100%;
+  /* height: 100%; */
+  height: 100vh;
   width: 90%;
 }
 
@@ -100,7 +101,10 @@ main {
   background-color: #f6f6ef;
   min-height: calc(100vh - 3rem);
   margin: 0%;
-  overflow: auto;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .newsList {
@@ -140,8 +144,8 @@ main {
   grid-area: linkSubDetails;
 }
 
-.divMore {
-  margin-top: 15px;
+.paging {
+  margin: 1rem 2.5rem;
 }
 
 .pageBtn {
