@@ -140,6 +140,15 @@ main {
   grid-area: linkSubDetails;
 }
 
+.divMore {
+  margin-top: 15px;
+}
+
+.pageBtn {
+  padding: 10px;
+  color: #000000;
+}
+
 footer,
 centre {
   margin: 0%;

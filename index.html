@@ -79,22 +79,81 @@
     const dataRequest = new Request(
       "https://hn.algolia.com/api/v1/search?tags=story"
     );
+    let perPageNews = 30;
+    let newsList = [];
+    let startIndex = 0;
+    let endIndex = 0;
     fetch(dataRequest)
       .then((response) => response.json())
       .then((responseData) => {
-        loadData(responseData.hits);
+        newsList = responseData.hits;
+        // current fetch contain 20 news, for pagination purpose duplication function is created.
+        // one page load is 30 news
+        duplicate(6);
+      })
+      .then(() => {
+        pageData();
       });
-    function loadData(newsJson) {
+    function duplicate(times) {
+      let tempNewsList = [];
+      let newsIndex = 0;
+      for (let i = 0; i < newsList.length * times; i++) {
+        tempNewsList.push(newsList[newsIndex]);
+        if (newsIndex < newsList.length - 1) {
+          newsIndex++;
+        } else {
+          newsIndex = 0;
+        }
+      }
+      newsList = tempNewsList;
+    }
+    function pageData(typeOfLoad) {
+      console.log(newsList);
+      if (typeOfLoad == "next") {
+        startIndex = endIndex;
+        endIndex = endIndex + perPageNews;
+      } else if (typeOfLoad == "back") {
+        endIndex = startIndex;
+        startIndex = startIndex - perPageNews;
+      } else {
+        startIndex = 0;
+        endIndex = perPageNews;
+      }
       const rootElement = document.getElementById("newsList");
+      rootElement.setAttribute("start", startIndex + 1);
       rootElement.classList.add("newsList");
       document.getElementById("newsList").innerHTML = "";
-      for (const news of newsJson) {
-        rootElement.appendChild(newsBox(news));
+      for (let index = startIndex; index < endIndex; index++) {
+        rootElement.appendChild(newsBox(newsList[index]));
       }
-      const mainTag = document.getElementById("newsList");
-      const moreTag = addElement("a", mainTag, {
+
+      let newsCount = newsList.length;
+      const moreBlock = addElement("div", rootElement, { class: "divMore" });
+      if (startIndex == 0) {
+        nextPageBtn(moreBlock);
+      } else if (startIndex != 0 && newsCount != endIndex) {
+        backPageBtn(moreBlock);
+        nextPageBtn(moreBlock);
+      } else if (newsCount == endIndex) {
+        backPageBtn(moreBlock);
+      }
+    }
+    function nextPageBtn(moreBlock) {
+      addElement("a", moreBlock, {
         text: "More",
-        otherAttribute: { href: "news.url" },
+        class: "pageBtn",
+        otherAttribute: {
+          onclick: "pageData('next');event.preventDefault();",
+        },
+      });
+    }
+    function backPageBtn(moreBlock) {
+      addElement("a", moreBlock, {
+        text: "Back",
+        class: "pageBtn",
+        otherAttribute: {
+          onclick: "pageData('back');event.preventDefault();",
+        },
       });
     }
     function addElement(
@@ -156,7 +215,16 @@
     function newsBox(news = {}) {
       const newsList = addElement("li", "", { class: "newsList" });
       const newsBlock = addElement("div", newsList, { class: "divGrid" });
-      addElement("span", newsBlock, { class: "upvote", text: "▲" });
+      addElement("a", newsBlock, {
+        class: "upvote",
+        text: "▲",
+        otherAttribute: {
+          href:
+            "https://news.ycombinator.com/vote?id=" +
+            news.objectID +
+            "&how=up&goto=news",
+        },
+      });
       const linkDetailsBlock = addElement("div", newsBlock, {
         class: "linkDetails",
       });
