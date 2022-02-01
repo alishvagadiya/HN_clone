@@ -92,7 +92,7 @@
         duplicate(6);
       })
       .then(() => {
-        pageData();
+        pageData(1);
       });
     function duplicate(times) {
       let tempNewsList = [];
@@ -108,13 +108,15 @@
       newsList = tempNewsList;
     }
     function pageData(typeOfLoad) {
-      console.log(newsList);
       if (typeOfLoad == "next") {
         startIndex = endIndex;
         endIndex = endIndex + perPageNews;
       } else if (typeOfLoad == "back") {
         endIndex = startIndex;
         startIndex = startIndex - perPageNews;
+      } else if (typeof typeOfLoad == "number") {
+        startIndex = (typeOfLoad - 1) * perPageNews;
+        endIndex = startIndex + perPageNews;
       } else {
         startIndex = 0;
         endIndex = perPageNews;
@@ -130,31 +132,48 @@
       let newsCount = newsList.length;
       const moreBlock = addElement("div", rootElement, { class: "divMore" });
       if (startIndex == 0) {
+        backPageBtn(moreBlock, "disable");
+        pageNumberBtn(moreBlock);
         nextPageBtn(moreBlock);
       } else if (startIndex != 0 && newsCount != endIndex) {
         backPageBtn(moreBlock);
+        pageNumberBtn(moreBlock);
         nextPageBtn(moreBlock);
       } else if (newsCount == endIndex) {
         backPageBtn(moreBlock);
+        pageNumberBtn(moreBlock);
+        nextPageBtn(moreBlock, "disable");
       }
     }
-    function nextPageBtn(moreBlock) {
+    function nextPageBtn(moreBlock, disable = "") {
       addElement("a", moreBlock, {
         text: "More",
-        class: "pageBtn",
+        class: "pageBtn" + " " + disable,
         otherAttribute: {
           onclick: "pageData('next');event.preventDefault();",
         },
       });
     }
-    function backPageBtn(moreBlock) {
+    function backPageBtn(moreBlock, disable = "") {
       addElement("a", moreBlock, {
         text: "Back",
-        class: "pageBtn",
+        class: "pageBtn" + " " + disable,
         otherAttribute: {
           onclick: "pageData('back');event.preventDefault();",
         },
       });
+    }
+    function pageNumberBtn(moreBlock) {
+      const totalPage = newsList.length / perPageNews;
+      for (let index = 1; index <= totalPage; index++) {
+        addElement("a", moreBlock, {
+          text: " " + index + " ",
+          class: "pageBtn",
+          otherAttribute: {
+            onclick: "pageData(" + index + ");event.preventDefault();",
+          },
+        });
+      }
     }
     function addElement(
       tagName,

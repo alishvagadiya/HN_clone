@@ -149,6 +149,11 @@ main {
   color: #000000;
 }
 
+.disable {
+  pointer-events: none;
+  color: inherit;
+}
+
 footer,
 centre {
   margin: 0%;
