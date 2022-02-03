@@ -173,10 +173,14 @@ hr {
 .navFooter {
   color: #000000;
   font-size: 8pt;
-  padding: 0.5rem 30%;
+  padding: 0.5rem 10%;
 }
 
 .navSearch {
   padding: 0.5rem;
   padding: 1rem;
+}
+
+.github {
+  margin: 10px;
 }
